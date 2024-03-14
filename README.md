@@ -189,3 +189,11 @@ needlehaystack.run_test --evaluator langsmith --context_lengths_num_intervals 3 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details. Use of this software requires attribution to the original author and project, as detailed in the license.
+
+
+## Mixtral Testing
+
+```bash
+NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "mistralai/Mixtral-8x7B-Instruct-v0.1" --document_depth_percents "[50]" --context_lengths "[2000]" --base_url "https://jvmbhs8c3bdxhv-8000.proxy.runpod.net/v1/"
+NIAH_EVALUATOR_API_KEY=unused NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "mistralai/Mixtral-8x7B-Instruct-v0.1" --document_depth_percents "[5, 20, 40, 60, 80, 95]" --context_lengths "[1024, 2048, 4096, 8192]" --base_url "https://4rp2ap6f43qa84-8000.proxy.runpod.net/v1/" 
+```
