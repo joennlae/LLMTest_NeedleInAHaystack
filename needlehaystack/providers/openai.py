@@ -6,6 +6,7 @@ from openai import AsyncOpenAI
 from langchain_openai import ChatOpenAI  
 from langchain.prompts import PromptTemplate
 import tiktoken
+from transformers import AutoTokenizer
 
 from .model import ModelProvider
 
@@ -22,11 +23,12 @@ class OpenAI(ModelProvider):
     """
         
     DEFAULT_MODEL_KWARGS: dict = dict(max_tokens  = 300,
-                                      temperature = 0)
+                                      temperature = 0.01)
 
     def __init__(self,
                  model_name: str = "gpt-3.5-turbo-0125",
-                 model_kwargs: dict = DEFAULT_MODEL_KWARGS):
+                 model_kwargs: dict = DEFAULT_MODEL_KWARGS,
+                 base_url: str | None = None):
         """
         Initializes the OpenAI model provider with a specific model.
 
@@ -44,9 +46,15 @@ class OpenAI(ModelProvider):
         self.model_name = model_name
         self.model_kwargs = model_kwargs
         self.api_key = api_key
-        self.model = AsyncOpenAI(api_key=self.api_key)
-        self.tokenizer = tiktoken.encoding_for_model(self.model_name)
-    
+        self.model = AsyncOpenAI(api_key=self.api_key, base_url=base_url)
+        self.is_mixtral = False
+        if base_url is not None:
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+            self.is_mixtral = True
+        else:
+            self.tokenizer = tiktoken.encoding_for_model(self.model_name)
+        self.base_url = base_url
+
     async def evaluate_model(self, prompt: str) -> str:
         """
         Evaluates a given prompt using the OpenAI model and retrieves the model's response.
@@ -60,7 +68,8 @@ class OpenAI(ModelProvider):
         response = await self.model.chat.completions.create(
                 model=self.model_name,
                 messages=prompt,
-                **self.model_kwargs
+                **self.model_kwargs,
+                stream=False
             )
         return response.choices[0].message.content
     
@@ -75,6 +84,11 @@ class OpenAI(ModelProvider):
         Returns:
             list[dict[str, str]]: A list of dictionaries representing the structured prompt, including roles and content for system and user messages.
         """
+        if self.is_mixtral:
+            return [{
+                "role": "user",
+                "content": "You are a helpful AI bot that answers questions for a user. Keep your response short and direct \n" + context + f"\n {retrieval_question} Don't give information outside the document or repeat your findings"
+            }]
         return [{
                 "role": "system",
                 "content": "You are a helpful AI bot that answers questions for a user. Keep your response short and direct"
