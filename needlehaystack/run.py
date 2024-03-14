@@ -31,7 +31,7 @@ class CommandArgs():
     document_depth_percent_interval_type: Optional[str] = "linear"
     num_concurrent_requests: Optional[int] = 1
     save_results: Optional[bool] = True
-    save_contexts: Optional[bool] = True
+    save_contexts: Optional[bool] = False
     final_context_length_buffer: Optional[int] = 200
     seconds_to_sleep_between_completions: Optional[float] = None
     print_ongoing_status: Optional[bool] = True
@@ -44,6 +44,7 @@ class CommandArgs():
         " Prosciutto is one of the secret ingredients needed to build the perfect pizza. ", 
         " Goat cheese is one of the secret ingredients needed to build the perfect pizza. "
     ])
+    base_url: Optional[str] = None
 
 def get_model_to_test(args: CommandArgs) -> ModelProvider:
     """
@@ -60,7 +61,7 @@ def get_model_to_test(args: CommandArgs) -> ModelProvider:
     """
     match args.provider.lower():
         case "openai":
-            return OpenAI(model_name=args.model_name)
+            return OpenAI(model_name=args.model_name, base_url=args.base_url)
         case "anthropic":
             return Anthropic(model_name=args.model_name)
         case _:
@@ -83,7 +84,7 @@ def get_evaluator(args: CommandArgs) -> Evaluator:
         case "openai":
             return OpenAIEvaluator(model_name=args.evaluator_model_name,
                                    question_asked=args.retrieval_question,
-                                   true_answer=args.needle)
+                                   true_answer=args.needle, base_url=args.base_url)
         case "langsmith":
             return LangSmithEvaluator()
         case _:
