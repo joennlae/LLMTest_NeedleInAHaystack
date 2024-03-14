@@ -157,7 +157,7 @@ class LLMNeedleHaystackTester:
         test_elapsed_time = test_end_time - test_start_time
 
         # Compare the reponse to the actual needle you placed
-        score = self.evaluation_model.evaluate_response(response)
+        score = await self.evaluation_model.evaluate_response(response)
 
         results = {
             # 'context' : context, # Uncomment this line if you'd like to save the context the model was asked to retrieve from. Warning: This will become very large.
@@ -182,7 +182,7 @@ class LLMNeedleHaystackTester:
             print (f"Score: {score}")
             print (f"Response: {response}\n")
 
-        context_file_location = f'{self.model_name.replace(".", "_")}_len_{context_length}_depth_{int(depth_percent*100)}'
+        context_file_location = f'{self.model_name.replace(".", "_").replace("/", "--")}_len_{context_length}_depth_{int(depth_percent*100)}'
 
         if self.save_contexts:
             results['file_name'] = context_file_location
