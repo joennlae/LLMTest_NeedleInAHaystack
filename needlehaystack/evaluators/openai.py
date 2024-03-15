@@ -100,26 +100,32 @@ class OpenAIEvaluator(Evaluator):
                 "role": "user",
                 "content": f"""
 You are a helpful AI bot that answers questions for a user.
-[Instruction]
+## Instructions
 Please act as an impartial judge and evaluate the quality of the response provided by an AI assistant to the user question displayed below.
-[Ground truth]
+Ground truth:
+```
 {reference}
+```
 
 Begin your evaluationby providing a short explanation. Be as objective as possible.
 After providing your explanation, you must rate the response on a scale of 1 to 10 by strictly following this format: "[[rating]]", for example: "Rating: [[5]]".
-
-So you must provide a rating between 1 and 10, inclusive, in double brackets. With the following format:
+If the ground truth is in the response, please rate it a 10.
+So you must provide a rating between 1 and 10, inclusive, in double brackets. 
+With the following format:
 ```
 Rating: [[5]]
 ```
 
-[Question]
+Question:
+```
 {input}
+```
 
 
-[The Start of Assistant\'s Answer]
+Assistant\'s Answer:
+```
 {prediction}
-[The End of Assistant\'s Answer]
+```
 
 Rating:
 """
@@ -135,10 +141,11 @@ Rating:
                 verdict = match.group(1)
 
             if not match or verdict not in list("123456789") + ["10"]:
-                raise ValueError(
+                print(
                     f"Invalid output: {rating_text}. "
                     "Output must contain a double bracketed string\
                     with the verdict between 1 and 10."
                 )
+                return 1
 
             return int(verdict)

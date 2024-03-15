@@ -87,7 +87,14 @@ class OpenAI(ModelProvider):
         if self.is_mixtral:
             return [{
                 "role": "user",
-                "content": "You are a helpful AI bot that answers questions for a user. Keep your response short and direct \n" + context + f"\n {retrieval_question} Don't give information outside the document or repeat your findings"
+                "content": "You are a helpful AI bot that answers questions for a user. Keep your response short and direct \n" 
+                + "Context: \n"
+                + "--------- \n"
+                + context 
+                + "--------- \n"
+                + f"\n {retrieval_question} Don't give information outside the document or repeat your findings. \n"
+                + "Be sure to be very specific and answer the question directly from the context."
+                + "Answer: \n"
             }]
         return [{
                 "role": "system",
