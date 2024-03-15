@@ -195,5 +195,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) 
 
 ```bash
 NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "mistralai/Mixtral-8x7B-Instruct-v0.1" --document_depth_percents "[50]" --context_lengths "[2000]" --base_url "https://jvmbhs8c3bdxhv-8000.proxy.runpod.net/v1/"
-NIAH_EVALUATOR_API_KEY=unused NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "mistralai/Mixtral-8x7B-Instruct-v0.1" --document_depth_percents "[5, 20, 40, 60, 80, 95]" --context_lengths "[1024, 2048, 4096, 8192]" --base_url "https://4rp2ap6f43qa84-8000.proxy.runpod.net/v1/" 
+NIAH_EVALUATOR_API_KEY=unused NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "mistralai/Mixtral-8x7B-Instruct-v0.1" --document_depth_percents "[5, 20, 40, 60, 80, 95]" --context_lengths "[1024, 2048, 4096, 8192]" --base_url "https://4rp2ap6f43qa84-8000.proxy.runpod.net/v1/"
+
+
+CUDA_VISIBLE_DEVICES=0,1,2,3 text-generation-launcher --model-id mistralai/Mixtral-8x7B-Instruct-v0.1 --trust-remote-code --port 8000 --max-input-length 32300 --max-total-tokens 32786 --max-batch-prefill-tokens 32300 --quantize eetq
+CUDA_VISIBLE_DEVICES=0,1,2,3 text-generation-launcher --model-id casperhansen/mixtral-instruct-awq --trust-remote-code --port 8000 --max-input-length 32300 --max-total-tokens 32786 --max-batch-prefill-tokens 32300 --quantize awq
+
+
+NIAH_EVALUATOR_API_KEY=unused NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "Qwen/Qwen1.5-72B-Chat-GPTQ-Int8" --document_depth_percents "[5, 20, 40, 60, 80, 95]" --context_lengths "[1000, 2000, 4000, 8000]" --base_url "https://nj6hz73xhmdcjt-8000.proxy.runpod.net/v1/" --evaluator_model_name "Qwen/Qwen1.5-72B-Chat-GPTQ-Int8"
+
+NIAH_EVALUATOR_API_KEY=unused NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "Qwen/Qwen1.5-14B-Chat-GPTQ-Int8" --document_depth_percents "[5, 20, 40, 60, 80, 95]" --context_lengths "[1000, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000, 22000, 24000, 26000, 28000, 30000, 32000]" --base_url "https://v5w56z8u6qrdf4-8000.proxy.runpod.net/v1/" --evaluator_model_name "Qwen/Qwen1.5-14B-Chat-GPTQ-Int8"
+
+NIAH_EVALUATOR_API_KEY=unused NIAH_MODEL_API_KEY=unused needlehaystack.run_test --provider openai --model_name "Qwen/Qwen1.5-14B-Chat-GPTQ-Int8" --document_depth_percents "[5, 20, 40, 60, 80, 95]" --context_lengths "[24000, 26000, 28000, 30000, 32000]" --base_url "https://v5w56z8u6qrdf4-8000.proxy.runpod.net/v1/" --evaluator_model_name "Qwen/Qwen1.5-14B-Chat-GPTQ-Int8"
 ```
