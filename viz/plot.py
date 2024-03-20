@@ -8,7 +8,7 @@ import os
 import glob
 
 # Path to the directory containing JSON results
-folder_path = 'results_qwen_14'  # Replace with your folder path
+folder_path = 'results'  # Replace with your folder path
 
 # Using glob to find all json files in the directory
 json_files = glob.glob(f"{folder_path}/*.json")
@@ -57,7 +57,7 @@ sns.heatmap(
 )
 
 # More aesthetics
-plt.title('Mixtral8x7B 32K Context - EETQ \nFact Retrieval Across Context Lengths ("Needle In A HayStack")')  # Adds a title
+plt.title('Mixtral8x7B-DPO-Hermes 32K Context - GPTQ(8-bit) \nFact Retrieval Across Context Lengths ("Needle In A HayStack")')  # Adds a title
 plt.xlabel('Token Limit')  # X-axis label
 plt.ylabel('Depth Percent')  # Y-axis label
 plt.xticks(rotation=45)  # Rotates the x-axis labels to prevent overlap
@@ -65,4 +65,4 @@ plt.yticks(rotation=0)  # Ensures the y-axis labels are horizontal
 plt.tight_layout()  # Fits everything neatly into the figure area
 
 # Save the plot
-plt.savefig('qwen_14_int8_32k_context_eetq.png', dpi=300)  # Save the plot as a PNG file with 300 DPI
+plt.savefig('mixtral_dpo_hermes_gptq_int8_32k_context.png', dpi=300)  # Save the plot as a PNG file with 300 DPI
